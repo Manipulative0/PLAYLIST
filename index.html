@@ -114,6 +114,15 @@
             document.getElementById('audioPlayer').src = track.audio;
             document.getElementById('audioPlayer').play();
         }
+
+        window.onload = function() {
+            // 最初にJoy Rideを設定
+            const track = tracks[0];
+            document.getElementById('trackTitle').innerText = track.title;
+            document.getElementById('trackArtist').innerText = track.artist;
+            document.getElementById('trackImage').src = track.image;
+            document.getElementById('audioPlayer').src = track.audio;
+        }
     </script>
 </head>
 <body>
@@ -123,8 +132,8 @@
             <img id="trackImage" src="images/image1.jpg" alt="Album Art">
             <div>
                 <small>Playing (2:09)</small><br>
-                <strong id="trackTitle">Going Under</strong><br>
-                <small id="trackArtist">Evanescence</small>
+                <strong id="trackTitle">Joy Ride</strong><br>
+                <small id="trackArtist">aves</small>
             </div>
             <div class="icons">
                 <span onclick="changeTrack('prev')">&#9650;</span>
@@ -149,3 +158,4 @@
     </div>
 </body>
 </html>
+
