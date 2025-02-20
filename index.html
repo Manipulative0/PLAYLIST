@@ -8,14 +8,14 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #008000;
+            background: #008000; /* 緑色 */
             color: white;
             text-align: center;
             overflow: hidden;
         }
         .top-bar, .bottom-bar {
             background: #005500;
-            padding: 5px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -35,23 +35,125 @@
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             width: 90vw;
+            padding-top: 60px;
         }
         .track {
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
+            border-radius: 15px;
+            margin: 15px 0;
             scroll-snap-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            cursor: pointer;
             transition: transform 0.3s ease-in-out;
+        }
+        .track:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .track-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+        }
+        .track-details {
+            text-align: left;
+            color: #fff;
+        }
+        .track-details p {
+            margin: 5px 0;
+        }
+        .track-details strong {
+            font-size: 1.1em;
+        }
+        .audio-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .audio-bar input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            height: 4px;
             cursor: pointer;
         }
-        img {
-            width: 50px;
-            height: 50px;
-            border-radius: 5px;
+        .audio-bar input::-webkit-slider-runnable-track {
+            background: #008000; /* 緑色 */
+        }
+        .audio-bar input::-webkit-slider-thumb {
+            background: #fff;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+        }
+        .audio-bar input::-moz-range-track {
+            background: #008000; /* 緑色 */
+        }
+        .audio-bar input::-moz-range-thumb {
+            background: #fff;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
         }
         .container::-webkit-scrollbar {
             display: none;
+        }
+        .play-btn {
+            background-color: #fff;
+            color: #008000;
+            font-size: 24px;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 15px;
+            order: -1; /* これでボタンを左側に配置 */
+        }
+        .play-btn:hover {
+            background-color: #f1f1f1;
+        }
+        .stop-btn {
+            background-color: #008000;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            margin-left: 15px;
+        }
+        .stop-btn:hover {
+            background-color: #006600;
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 768px) {
+            .container {
+                width: 100vw;
+                padding-top: 20px;
+            }
+            .track-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            .audio-bar {
+                margin-top: 15px;
+            }
         }
     </style>
 </head>
@@ -63,24 +165,48 @@
     
     <div class="container">
         <div class="track" onclick="playTrack('audio1')">
-            <p>Playing (2:09)</p>
-            <p><strong>ヒステリックナイトガール</strong><br>PSYQU</p>
-            <img src="2.jpg" alt="Album Art">
-            <p>6/212</p>
+            <div class="track-info">
+                <div class="play-btn" onclick="togglePlayPause('audio1')">▶</div>
+                <img src="2.jpg" alt="Album Art">
+                <div class="track-details">
+                    <p>Playing (2:09)</p>
+                    <p><strong>ヒステリックナイトガール</strong><br>PSYQU</p>
+                    <p>6/212</p>
+                </div>
+            </div>
+            <div class="audio-bar">
+                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio1', this.value)">
+            </div>
             <audio id="audio1" src="PSYQUI - ヒステリックナイトガール feat. Such (android52 Edit).mp3"></audio>
         </div>
         <div class="track" onclick="playTrack('audio2')">
-            <p>Playing (3:45)</p>
-            <p><strong>Numb</strong><br>Linkin Park</p>
-            <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
-            <p>7/212</p>
+            <div class="track-info">
+                <div class="play-btn" onclick="togglePlayPause('audio2')">▶</div>
+                <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
+                <div class="track-details">
+                    <p>Playing (3:45)</p>
+                    <p><strong>Numb</strong><br>Linkin Park</p>
+                    <p>7/212</p>
+                </div>
+            </div>
+            <div class="audio-bar">
+                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio2', this.value)">
+            </div>
             <audio id="audio2" src="path/to/your/mp3/Numb.mp3"></audio>
         </div>
         <div class="track" onclick="playTrack('audio3')">
-            <p>Playing (4:12)</p>
-            <p><strong>Bring Me to Life</strong><br>Evanescence</p>
-            <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Evanescence_-_Fallen.png" alt="Album Art">
-            <p>8/212</p>
+            <div class="track-info">
+                <div class="play-btn" onclick="togglePlayPause('audio3')">▶</div>
+                <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Evanescence_-_Fallen.png" alt="Album Art">
+                <div class="track-details">
+                    <p>Playing (4:12)</p>
+                    <p><strong>Bring Me to Life</strong><br>Evanescence</p>
+                    <p>8/212</p>
+                </div>
+            </div>
+            <div class="audio-bar">
+                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio3', this.value)">
+            </div>
             <audio id="audio3" src="path/to/your/mp3/Bring_Me_to_Life.mp3"></audio>
         </div>
     </div>
@@ -92,13 +218,31 @@
 
     <script>
         function playTrack(trackId) {
-            // 一旦すべてのトラックを停止
             const allTracks = document.querySelectorAll('audio');
             allTracks.forEach(track => track.pause());
 
-            // 対象トラックを再生
             const track = document.getElementById(trackId);
             track.play();
+        }
+
+        function updateAudioTime(trackId, value) {
+            const track = document.getElementById(trackId);
+            const audioDuration = track.duration;
+            const newTime = (value / 100) * audioDuration;
+            track.currentTime = newTime;
+        }
+
+        function togglePlayPause(trackId) {
+            const track = document.getElementById(trackId);
+            const playButton = document.querySelector(`#${trackId}`).previousElementSibling;
+
+            if (track.paused) {
+                track.play();
+                playButton.textContent = '⏸';  // 再生中は「⏸」
+            } else {
+                track.pause();
+                playButton.textContent = '▶';  // 停止中は「▶」
+            }
         }
     </script>
 </body>
