@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Mobile UI</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #2a7302, #74c400);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 320px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .task {
+            font-size: 16px;
+            text-align: left;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .player {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+        .player img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .photos {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .icons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .icons span {
+            font-size: 20px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .navigation span {
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        let currentTrack = 0;
+        const totalTracks = 20;
+        const tracks = [
+            { title: "Going Under", artist: "Evanescence", image: "images/image1.jpg", audio: "audio/track1.mp3" },
+            { title: "Song 2", artist: "Artist 2", image: "images/image2.jpg", audio: "audio/track2.mp3" },
+            { title: "Song 3", artist: "Artist 3", image: "images/image3.jpg", audio: "audio/track3.mp3" },
+            { title: "Song 4", artist: "Artist 4", image: "images/image4.jpg", audio: "audio/track4.mp3" },
+            { title: "Song 5", artist: "Artist 5", image: "images/image5.jpg", audio: "audio/track5.mp3" },
+            { title: "Song 6", artist: "Artist 6", image: "images/image6.jpg", audio: "audio/track6.mp3" },
+            { title: "Song 7", artist: "Artist 7", image: "images/image7.jpg", audio: "audio/track7.mp3" },
+            { title: "Song 8", artist: "Artist 8", image: "images/image8.jpg", audio: "audio/track8.mp3" },
+            { title: "Song 9", artist: "Artist 9", image: "images/image9.jpg", audio: "audio/track9.mp3" },
+            { title: "Song 10", artist: "Artist 10", image: "images/image10.jpg", audio: "audio/track10.mp3" },
+            { title: "Song 11", artist: "Artist 11", image: "images/image11.jpg", audio: "audio/track11.mp3" },
+            { title: "Song 12", artist: "Artist 12", image: "images/image12.jpg", audio: "audio/track12.mp3" },
+            { title: "Song 13", artist: "Artist 13", image: "images/image13.jpg", audio: "audio/track13.mp3" },
+            { title: "Song 14", artist: "Artist 14", image: "images/image14.jpg", audio: "audio/track14.mp3" },
+            { title: "Song 15", artist: "Artist 15", image: "images/image15.jpg", audio: "audio/track15.mp3" },
+            { title: "Song 16", artist: "Artist 16", image: "images/image16.jpg", audio: "audio/track16.mp3" },
+            { title: "Song 17", artist: "Artist 17", image: "images/image17.jpg", audio: "audio/track17.mp3" },
+            { title: "Song 18", artist: "Artist 18", image: "images/image18.jpg", audio: "audio/track18.mp3" },
+            { title: "Song 19", artist: "Artist 19", image: "images/image19.jpg", audio: "audio/track19.mp3" },
+            { title: "Song 20", artist: "Artist 20", image: "images/image20.jpg", audio: "audio/track20.mp3" }
+        ];
+
+        function changeTrack(direction) {
+            if (direction === 'next' && currentTrack < totalTracks - 1) {
+                currentTrack++;
+            } else if (direction === 'prev' && currentTrack > 0) {
+                currentTrack--;
+            }
+            const track = tracks[currentTrack];
+            document.getElementById('trackNumber').innerText = `${currentTrack + 1}/${totalTracks}`;
+            document.getElementById('trackTitle').innerText = track.title;
+            document.getElementById('trackArtist').innerText = track.artist;
+            document.getElementById('trackImage').src = track.image;
+            document.getElementById('audioPlayer').src = track.audio;
+            document.getElementById('audioPlayer').play();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="task">Walk the dog :)<br><small>Tomorrow: 6:30 AM</small></div>
+        <div class="player">
+            <img id="trackImage" src="images/image1.jpg" alt="Album Art">
+            <div>
+                <small>Playing (2:09)</small><br>
+                <strong id="trackTitle">Going Under</strong><br>
+                <small id="trackArtist">Evanescence</small>
+            </div>
+            <div class="icons">
+                <span onclick="changeTrack('prev')">&#9650;</span>
+                <span>&#128077;</span>
+                <span onclick="changeTrack('next')">&#9660;</span>
+            </div>
+        </div>
+        <div class="navigation">
+            <span onclick="changeTrack('prev')">&#9664;</span>
+            <span id="trackNumber">1/20</span>
+            <span onclick="changeTrack('next')">&#9654;</span>
+        </div>
+        <div class="photos">39 Photos</div>
+        <div class="bottom-bar">
+            <span>Start</span>
+            <span>Windows Media</span>
+        </div>
+        <audio id="audioPlayer" controls>
+            <source src="audio/track1.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+</body>
+</html>
