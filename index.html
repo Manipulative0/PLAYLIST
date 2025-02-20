@@ -3,159 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows Mobile UI</title>
+    <title>Windows Mobile風UI</title>
     <style>
         body {
-            background: linear-gradient(135deg, #2a7302, #74c400);
-            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #008000;
             color: white;
             text-align: center;
-            padding: 20px;
+            overflow: hidden;
         }
-        .container {
-            width: 320px;
-            margin: auto;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .task {
-            font-size: 16px;
-            text-align: left;
+        .top-bar, .bottom-bar {
+            background: #005500;
             padding: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .player {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-            position: relative;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            position: fixed;
+            width: 100%;
         }
-        .player img {
+        .top-bar { top: 0; }
+        .bottom-bar { bottom: 0; }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 70vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            width: 90vw;
+        }
+        .track {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            scroll-snap-align: center;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        img {
             width: 50px;
             height: 50px;
             border-radius: 5px;
-            margin-right: 10px;
         }
-        .photos {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .bottom-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .icons {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .icons span {
-            font-size: 20px;
-            cursor: pointer;
-            margin: 5px 0;
-        }
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .navigation span {
-            font-size: 20px;
-            cursor: pointer;
+        .container::-webkit-scrollbar {
+            display: none;
         }
     </style>
-    <script>
-        let currentTrack = 0;
-        const totalTracks = 20;
-        const tracks = [
-            { title: "Joy Ride", artist: "aves", image: "1.avif", audio: "Aves - Joy Ride.mp3" },
-            { title: "ヒステリックナイトガール", artist: "SPYQUI", image: "2.jpg", audio: "PSYQUI - ヒステリックナイトガール feat. Such (android52 Edit).mp3" },
-            { title: "Song 3", artist: "Artist 3", image: "images/image3.jpg", audio: "audio/track3.mp3" },
-            { title: "Song 4", artist: "Artist 4", image: "images/image4.jpg", audio: "audio/track4.mp3" },
-            { title: "Song 5", artist: "Artist 5", image: "images/image5.jpg", audio: "audio/track5.mp3" },
-            { title: "Song 6", artist: "Artist 6", image: "images/image6.jpg", audio: "audio/track6.mp3" },
-            { title: "Song 7", artist: "Artist 7", image: "images/image7.jpg", audio: "audio/track7.mp3" },
-            { title: "Song 8", artist: "Artist 8", image: "images/image8.jpg", audio: "audio/track8.mp3" },
-            { title: "Song 9", artist: "Artist 9", image: "images/image9.jpg", audio: "audio/track9.mp3" },
-            { title: "Song 10", artist: "Artist 10", image: "images/image10.jpg", audio: "audio/track10.mp3" },
-            { title: "Song 11", artist: "Artist 11", image: "images/image11.jpg", audio: "audio/track11.mp3" },
-            { title: "Song 12", artist: "Artist 12", image: "images/image12.jpg", audio: "audio/track12.mp3" },
-            { title: "Song 13", artist: "Artist 13", image: "images/image13.jpg", audio: "audio/track13.mp3" },
-            { title: "Song 14", artist: "Artist 14", image: "images/image14.jpg", audio: "audio/track14.mp3" },
-            { title: "Song 15", artist: "Artist 15", image: "images/image15.jpg", audio: "audio/track15.mp3" },
-            { title: "Song 16", artist: "Artist 16", image: "images/image16.jpg", audio: "audio/track16.mp3" },
-            { title: "Song 17", artist: "Artist 17", image: "images/image17.jpg", audio: "audio/track17.mp3" },
-            { title: "Song 18", artist: "Artist 18", image: "images/image18.jpg", audio: "audio/track18.mp3" },
-            { title: "Song 19", artist: "Artist 19", image: "images/image19.jpg", audio: "audio/track19.mp3" },
-            { title: "Song 20", artist: "Artist 20", image: "images/image20.jpg", audio: "audio/track20.mp3" }
-        ];
-
-        function changeTrack(direction) {
-            if (direction === 'next' && currentTrack < totalTracks - 1) {
-                currentTrack++;
-            } else if (direction === 'prev' && currentTrack > 0) {
-                currentTrack--;
-            }
-            const track = tracks[currentTrack];
-            document.getElementById('trackNumber').innerText = `${currentTrack + 1}/${totalTracks}`;
-            document.getElementById('trackTitle').innerText = track.title;
-            document.getElementById('trackArtist').innerText = track.artist;
-            document.getElementById('trackImage').src = track.image;
-            document.getElementById('audioPlayer').src = track.audio;
-            document.getElementById('audioPlayer').play();
-        }
-
-        window.onload = function() {
-            // 最初にJoy Rideを設定
-            const track = tracks[0];
-            document.getElementById('trackTitle').innerText = track.title;
-            document.getElementById('trackArtist').innerText = track.artist;
-            document.getElementById('trackImage').src = track.image;
-            document.getElementById('audioPlayer').src = track.audio;
-        }
-    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="task">Walk the dog :)<br><small>Tomorrow: 6:30 AM</small></div>
-        <div class="player">
-            <img id="trackImage" src="images/image1.jpg" alt="Album Art">
-            <div>
-                <small>Playing (2:09)</small><br>
-                <strong id="trackTitle">Joy Ride</strong><br>
-                <small id="trackArtist">aves</small>
-            </div>
-            <div class="icons">
-                <span onclick="changeTrack('prev')">&#9650;</span>
-                <span>&#128077;</span>
-                <span onclick="changeTrack('next')">&#9660;</span>
-            </div>
-        </div>
-        <div class="navigation">
-            <span onclick="changeTrack('prev')">&#9664;</span>
-            <span id="trackNumber">1/20</span>
-            <span onclick="changeTrack('next')">&#9654;</span>
-        </div>
-        <div class="photos">39 Photos</div>
-        <div class="bottom-bar">
-            <span></span>
-            <span></span>
-        </div>
-        <audio id="audioPlayer" controls>
-            <source src="audio/track1.mp3" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
+    <div class="top-bar">
+        <span>📶 🔋 6:30 AM</span>
+        <span>📧 🏠</span>
     </div>
+    
+    <div class="container">
+        <div class="track" onclick="playTrack('audio1')">
+            <p>Playing (2:09)</p>
+            <p><strong>Going Under</strong><br>Evanescence</p>
+            <img src="1.png" alt="Album Art">
+            <p>6/212</p>
+            <audio id="audio1" src="PSYQUI - ヒステリックナイトガール feat. Such (android52 Edit).mp3"></audio>
+        </div>
+        <div class="track" onclick="playTrack('audio2')">
+            <p>Playing (3:45)</p>
+            <p><strong>Numb</strong><br>Linkin Park</p>
+            <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
+            <p>7/212</p>
+            <audio id="audio2" src="path/to/your/mp3/Numb.mp3"></audio>
+        </div>
+        <div class="track" onclick="playTrack('audio3')">
+            <p>Playing (4:12)</p>
+            <p><strong>Bring Me to Life</strong><br>Evanescence</p>
+            <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Evanescence_-_Fallen.png" alt="Album Art">
+            <p>8/212</p>
+            <audio id="audio3" src="path/to/your/mp3/Bring_Me_to_Life.mp3"></audio>
+        </div>
+    </div>
+    
+    <div class="bottom-bar">
+        <span>Start</span>
+        <span>Windows Media</span>
+    </div>
+
+    <script>
+        function playTrack(trackId) {
+            // 一旦すべてのトラックを停止
+            const allTracks = document.querySelectorAll('audio');
+            allTracks.forEach(track => track.pause());
+
+            // 対象トラックを再生
+            const track = document.getElementById(trackId);
+            track.play();
+        }
+    </script>
 </body>
 </html>
-
