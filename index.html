@@ -36,6 +36,7 @@
             scroll-snap-type: y mandatory;
             width: 90vw;
             padding-top: 60px;
+            box-sizing: border-box;
         }
         .track {
             background: rgba(255, 255, 255, 0.2);
@@ -109,7 +110,7 @@
         .container::-webkit-scrollbar {
             display: none;
         }
-        .play-btn {
+        .play-btn, .stop-btn {
             background-color: #fff;
             color: #008000;
             font-size: 24px;
@@ -122,23 +123,17 @@
             align-items: center;
             cursor: pointer;
             margin-right: 15px;
-            order: -1; /* これでボタンを左側に配置 */
-        }
-        .play-btn:hover {
-            background-color: #f1f1f1;
         }
         .stop-btn {
             background-color: #008000;
             color: white;
+            font-size: 14px;
             padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            border: none;
-            margin-left: 15px;
         }
-        .stop-btn:hover {
-            background-color: #006600;
+        .play-btn:hover, .stop-btn:hover {
+            background-color: #f1f1f1;
         }
 
         /* スマホ対応 */
@@ -154,6 +149,10 @@
             .audio-bar {
                 margin-top: 15px;
             }
+            .track-info img {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -166,7 +165,7 @@
     <div class="container">
         <div class="track" onclick="playTrack('audio1')">
             <div class="track-info">
-                <div class="play-btn" onclick="togglePlayPause('audio1')">▶</div>
+                <div class="play-btn" id="play-btn1" onclick="togglePlayPause('audio1', 'play-btn1')">▶</div>
                 <img src="2.jpg" alt="Album Art">
                 <div class="track-details">
                     <p>Playing (2:09)</p>
@@ -181,7 +180,7 @@
         </div>
         <div class="track" onclick="playTrack('audio2')">
             <div class="track-info">
-                <div class="play-btn" onclick="togglePlayPause('audio2')">▶</div>
+                <div class="play-btn" id="play-btn2" onclick="togglePlayPause('audio2', 'play-btn2')">▶</div>
                 <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
                 <div class="track-details">
                     <p>Playing (3:45)</p>
@@ -196,7 +195,7 @@
         </div>
         <div class="track" onclick="playTrack('audio3')">
             <div class="track-info">
-                <div class="play-btn" onclick="togglePlayPause('audio3')">▶</div>
+                <div class="play-btn" id="play-btn3" onclick="togglePlayPause('audio3', 'play-btn3')">▶</div>
                 <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Evanescence_-_Fallen.png" alt="Album Art">
                 <div class="track-details">
                     <p>Playing (4:12)</p>
@@ -223,6 +222,8 @@
 
             const track = document.getElementById(trackId);
             track.play();
+            const playButton = document.querySelector(`#${trackId}`).previousElementSibling;
+            playButton.textContent = '⏸';  // 再生中は「⏸」
         }
 
         function updateAudioTime(trackId, value) {
@@ -232,16 +233,17 @@
             track.currentTime = newTime;
         }
 
-        function togglePlayPause(trackId) {
+        function togglePlayPause(trackId, playButtonId) {
             const track = document.getElementById(trackId);
-            const playButton = document.querySelector(`#${trackId}`).previousElementSibling;
+            const playButton = document.getElementById(playButtonId);
 
             if (track.paused) {
                 track.play();
                 playButton.textContent = '⏸';  // 再生中は「⏸」
             } else {
                 track.pause();
-                playButton.textContent = '▶';  // 停止中は「▶」
+                track.currentTime = 0;  // 完全に停止
+                playButton.textContent = '▶';  // 停止後は「▶」
             }
         }
     </script>
