@@ -3,156 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows Mobile風UI</title>
+    <title></title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #008000; /* 緑色 */
+            background: #008000;
             color: white;
             text-align: center;
-            overflow: hidden;
         }
         .top-bar, .bottom-bar {
             background: #005500;
-            padding: 10px;
+            padding: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             position: fixed;
             width: 100%;
+            z-index: 100;
         }
         .top-bar { top: 0; }
         .bottom-bar { bottom: 0; }
         .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            height: 70vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            width: 90vw;
-            padding-top: 60px;
-            box-sizing: border-box;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
         }
         .track {
             background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 15px 0;
-            scroll-snap-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-        .track:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        .track-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .track-info img {
-            width: 60px;
-            height: 60px;
+            padding: 10px;
             border-radius: 10px;
-        }
-        .track-details {
-            text-align: left;
-            color: #fff;
-        }
-        .track-details p {
-            margin: 5px 0;
-        }
-        .track-details strong {
-            font-size: 1.1em;
-        }
-        .audio-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            margin-top: 10px;
-            position: relative;
-        }
-        .audio-bar input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            height: 4px;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             cursor: pointer;
         }
-        .audio-bar input::-webkit-slider-runnable-track {
-            background: #008000; /* 緑色 */
-        }
-        .audio-bar input::-webkit-slider-thumb {
-            background: #fff;
-            border-radius: 50%;
-            width: 12px;
-            height: 12px;
-        }
-        .audio-bar input::-moz-range-track {
-            background: #008000; /* 緑色 */
-        }
-        .audio-bar input::-moz-range-thumb {
-            background: #fff;
-            border-radius: 50%;
-            width: 12px;
-            height: 12px;
-        }
-        .container::-webkit-scrollbar {
-            display: none;
-        }
-        .play-btn, .stop-btn {
-            background-color: #fff;
-            color: #008000;
-            font-size: 24px;
-            border: none;
-            border-radius: 50%;
+        .track img {
             width: 50px;
             height: 50px;
+            border-radius: 8px;
+        }
+        .track-details {
+            flex-grow: 1;
+            padding-left: 10px;
+            text-align: left;
+        }
+        .track-controls {
+            display: flex;
+            align-items: center;
+        }
+        .play-btn {
+            background-color: #fff;
+            color: #008000;
+            font-size: 20px;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            margin-right: 15px;
         }
-        .stop-btn {
-            background-color: #008000;
-            color: white;
-            font-size: 14px;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .play-btn:hover, .stop-btn:hover {
+        .play-btn:hover {
             background-color: #f1f1f1;
-        }
-
-        /* スマホ対応 */
-        @media (max-width: 768px) {
-            .container {
-                width: 100vw;
-                padding-top: 20px;
-            }
-            .track-info {
-                flex-direction: column;
-                text-align: center;
-            }
-            .audio-bar {
-                margin-top: 15px;
-            }
-            .track-info img {
-                width: 50px;
-                height: 50px;
-            }
         }
     </style>
 </head>
@@ -163,89 +84,46 @@
     </div>
     
     <div class="container">
-        <div class="track" onclick="playTrack('audio1')">
-            <div class="track-info">
-                <div class="play-btn" id="play-btn1" onclick="togglePlayPause('audio1', 'play-btn1')">▶</div>
-                <img src="2.jpg" alt="Album Art">
-                <div class="track-details">
-                    <p>Playing (2:09)</p>
-                    <p><strong>ヒステリックナイトガール</strong><br>PSYQU</p>
-                    <p>6/212</p>
-                </div>
+        <div class="track" onclick="togglePlayPause('audio1', 'play-btn1')">
+            <img src="2.jpg" alt="Album Art">
+            <div class="track-details">
+                <p><strong>ヒステリックナイトガール</strong><br>PSYQUI</p>
             </div>
-            <div class="audio-bar">
-                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio1', this.value)">
-            </div>
-            <audio id="audio1" src="PSYQUI - ヒステリックナイトガール feat. Such (android52 Edit).mp3"></audio>
+            <button class="play-btn" id="play-btn1">▶</button>
+            <audio id="audio1" src="PSYQUI.mp3"></audio>
         </div>
-        <div class="track" onclick="playTrack('audio2')">
-            <div class="track-info">
-                <div class="play-btn" id="play-btn2" onclick="togglePlayPause('audio2', 'play-btn2')">▶</div>
-                <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
-                <div class="track-details">
-                    <p>Playing (3:45)</p>
-                    <p><strong>Numb</strong><br>Linkin Park</p>
-                    <p>7/212</p>
-                </div>
+        <div class="track" onclick="togglePlayPause('audio2', 'play-btn2')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/7/77/Linkin_Park_Meteora_Album_Cover.jpg" alt="Album Art">
+            <div class="track-details">
+                <p><strong>Numb</strong><br>Linkin Park</p>
             </div>
-            <div class="audio-bar">
-                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio2', this.value)">
-            </div>
-            <audio id="audio2" src="path/to/your/mp3/Numb.mp3"></audio>
-        </div>
-        <div class="track" onclick="playTrack('audio3')">
-            <div class="track-info">
-                <div class="play-btn" id="play-btn3" onclick="togglePlayPause('audio3', 'play-btn3')">▶</div>
-                <img src="https://upload.wikimedia.org/wikipedia/en/6/66/Evanescence_-_Fallen.png" alt="Album Art">
-                <div class="track-details">
-                    <p>Playing (4:12)</p>
-                    <p><strong>Bring Me to Life</strong><br>Evanescence</p>
-                    <p>8/212</p>
-                </div>
-            </div>
-            <div class="audio-bar">
-                <input type="range" value="0" max="100" step="1" onchange="updateAudioTime('audio3', this.value)">
-            </div>
-            <audio id="audio3" src="path/to/your/mp3/Bring_Me_to_Life.mp3"></audio>
+            <button class="play-btn" id="play-btn2">▶</button>
+            <audio id="audio2" src="Numb.mp3"></audio>
         </div>
     </div>
     
     <div class="bottom-bar">
         <span>Start</span>
-        <span>Windows Media</span>
+        <span>code by RUI</span>
     </div>
 
     <script>
-        function playTrack(trackId) {
-            const allTracks = document.querySelectorAll('audio');
-            allTracks.forEach(track => track.pause());
+        function togglePlayPause(trackId, btnId) {
+            const audio = document.getElementById(trackId);
+            const button = document.getElementById(btnId);
 
-            const track = document.getElementById(trackId);
-            track.play();
-            const playButton = document.querySelector(`#${trackId}`).previousElementSibling;
-            playButton.textContent = '⏸';  // 再生中は「⏸」
-        }
-
-        function updateAudioTime(trackId, value) {
-            const track = document.getElementById(trackId);
-            const audioDuration = track.duration;
-            const newTime = (value / 100) * audioDuration;
-            track.currentTime = newTime;
-        }
-
-        function togglePlayPause(trackId, playButtonId) {
-            const track = document.getElementById(trackId);
-            const playButton = document.getElementById(playButtonId);
-
-            if (track.paused) {
-                track.play();
-                playButton.textContent = '⏸';  // 再生中は「⏸」
+            if (audio.paused) {
+                document.querySelectorAll('audio').forEach(track => track.pause());
+                document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = '▶');
+                
+                audio.play();
+                button.textContent = '⏸';
             } else {
-                track.pause();
-                track.currentTime = 0;  // 完全に停止
-                playButton.textContent = '▶';  // 停止後は「▶」
+                audio.pause();
+                button.textContent = '▶';
             }
         }
     </script>
 </body>
 </html>
+
